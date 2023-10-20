@@ -436,6 +436,28 @@ export default class Gantt {
                 class: 'today-highlight',
                 append_to: this.layers.grid,
             });
+        } else if (this.view_is(VIEW_MODE.MONTH)) {
+            const x =
+                (date_utils.diff(date_utils.today(), this.gantt_start, 'hour') /
+                    this.options.step) *
+                this.options.column_width;
+            const y = 0;
+
+            const width = 2;
+            const height =
+                (this.options.bar_height + this.options.padding) *
+                this.tasks.length +
+                this.options.header_height +
+                this.options.padding / 2;
+
+            createSVG('rect', {
+                x,
+                y,
+                width,
+                height,
+                class: 'today-highlight-line',
+                append_to: this.layers.grid,
+            });
         }
     }
 
