@@ -42,7 +42,7 @@ export default class Gantt {
         } else {
             throw new TypeError(
                 'Frappé Gantt only supports usage of a string CSS selector,' +
-                    " HTML DOM element or SVG DOM element for the 'element' parameter"
+                " HTML DOM element or SVG DOM element for the 'element' parameter"
             );
         }
 
@@ -86,6 +86,7 @@ export default class Gantt {
             date_format: 'YYYY-MM-DD',
             popup_trigger: 'click',
             custom_popup_html: null,
+            read_only: false,
             language: 'en',
         };
         this.options = Object.assign({}, default_options, options);
@@ -307,7 +308,7 @@ export default class Gantt {
             this.options.header_height +
             this.options.padding +
             (this.options.bar_height + this.options.padding) *
-                this.tasks.length;
+            this.tasks.length;
 
         createSVG('rect', {
             x: 0,
@@ -424,7 +425,7 @@ export default class Gantt {
             const width = this.options.column_width;
             const height =
                 (this.options.bar_height + this.options.padding) *
-                    this.tasks.length +
+                this.tasks.length +
                 this.options.header_height +
                 this.options.padding / 2;
 
@@ -533,10 +534,10 @@ export default class Gantt {
                 date.getDate() !== last_date.getDate()
                     ? date.getMonth() !== last_date.getMonth()
                         ? date_utils.format(
-                              date,
-                              'D MMM',
-                              this.options.language
-                          )
+                            date,
+                            'D MMM',
+                            this.options.language
+                        )
                         : date_utils.format(date, 'D', this.options.language)
                     : '',
             Day_upper:
@@ -650,7 +651,7 @@ export default class Gantt {
 
         const scroll_pos =
             (hours_before_first_task / this.options.step) *
-                this.options.column_width -
+            this.options.column_width -
             this.options.column_width;
 
         parent_element.scrollLeft = scroll_pos;
@@ -669,6 +670,7 @@ export default class Gantt {
     }
 
     bind_bar_events() {
+        if (this.options.read_only) return;
         let is_dragging = false;
         let x_on_start = 0;
         let y_on_start = 0;

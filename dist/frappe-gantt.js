@@ -789,7 +789,7 @@ var Gantt = (function () {
 
         calculate_path() {
             let start_x =
-                this.from_task.$bar.getX() + this.from_task.$bar.getWidth() / 2;
+                this.from_task.$bar.getX() + this.from_task.$bar.getWidth() - 40;
 
             const condition = () =>
                 this.to_task.$bar.getX() < start_x + this.gantt.options.padding &&
@@ -803,7 +803,7 @@ var Gantt = (function () {
                 this.gantt.options.header_height +
                 this.gantt.options.bar_height +
                 (this.gantt.options.padding + this.gantt.options.bar_height) *
-                    this.from_task.task._index +
+                this.from_task.task._index +
                 this.gantt.options.padding;
 
             const end_x = this.to_task.$bar.getX() - this.gantt.options.padding / 2;
@@ -811,7 +811,7 @@ var Gantt = (function () {
                 this.gantt.options.header_height +
                 this.gantt.options.bar_height / 2 +
                 (this.gantt.options.padding + this.gantt.options.bar_height) *
-                    this.to_task.task._index +
+                this.to_task.task._index +
                 this.gantt.options.padding;
 
             const from_is_below_to =
@@ -978,7 +978,7 @@ var Gantt = (function () {
             } else {
                 throw new TypeError(
                     'Frappé Gantt only supports usage of a string CSS selector,' +
-                        " HTML DOM element or SVG DOM element for the 'element' parameter"
+                    " HTML DOM element or SVG DOM element for the 'element' parameter"
                 );
             }
 
@@ -1022,6 +1022,7 @@ var Gantt = (function () {
                 date_format: 'YYYY-MM-DD',
                 popup_trigger: 'click',
                 custom_popup_html: null,
+                read_only: false,
                 language: 'en',
             };
             this.options = Object.assign({}, default_options, options);
@@ -1243,7 +1244,7 @@ var Gantt = (function () {
                 this.options.header_height +
                 this.options.padding +
                 (this.options.bar_height + this.options.padding) *
-                    this.tasks.length;
+                this.tasks.length;
 
             createSVG('rect', {
                 x: 0,
@@ -1360,7 +1361,7 @@ var Gantt = (function () {
                 const width = this.options.column_width;
                 const height =
                     (this.options.bar_height + this.options.padding) *
-                        this.tasks.length +
+                    this.tasks.length +
                     this.options.header_height +
                     this.options.padding / 2;
 
@@ -1469,10 +1470,10 @@ var Gantt = (function () {
                     date.getDate() !== last_date.getDate()
                         ? date.getMonth() !== last_date.getMonth()
                             ? date_utils.format(
-                                  date,
-                                  'D MMM',
-                                  this.options.language
-                              )
+                                date,
+                                'D MMM',
+                                this.options.language
+                            )
                             : date_utils.format(date, 'D', this.options.language)
                         : '',
                 Day_upper:
@@ -1586,7 +1587,7 @@ var Gantt = (function () {
 
             const scroll_pos =
                 (hours_before_first_task / this.options.step) *
-                    this.options.column_width -
+                this.options.column_width -
                 this.options.column_width;
 
             parent_element.scrollLeft = scroll_pos;
@@ -1605,6 +1606,7 @@ var Gantt = (function () {
         }
 
         bind_bar_events() {
+            if (this.options.read_only) return;
             let is_dragging = false;
             let x_on_start = 0;
             let y_on_start = 0;

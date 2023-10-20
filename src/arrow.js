@@ -12,7 +12,7 @@ export default class Arrow {
 
     calculate_path() {
         let start_x =
-            this.from_task.$bar.getX() + this.from_task.$bar.getWidth() / 2;
+            this.from_task.$bar.getX() + this.from_task.$bar.getWidth() - 40;
 
         const condition = () =>
             this.to_task.$bar.getX() < start_x + this.gantt.options.padding &&
@@ -26,7 +26,7 @@ export default class Arrow {
             this.gantt.options.header_height +
             this.gantt.options.bar_height +
             (this.gantt.options.padding + this.gantt.options.bar_height) *
-                this.from_task.task._index +
+            this.from_task.task._index +
             this.gantt.options.padding;
 
         const end_x = this.to_task.$bar.getX() - this.gantt.options.padding / 2;
@@ -34,7 +34,7 @@ export default class Arrow {
             this.gantt.options.header_height +
             this.gantt.options.bar_height / 2 +
             (this.gantt.options.padding + this.gantt.options.bar_height) *
-                this.to_task.task._index +
+            this.to_task.task._index +
             this.gantt.options.padding;
 
         const from_is_below_to =
